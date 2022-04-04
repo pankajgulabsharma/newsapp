@@ -8,19 +8,21 @@ const registerUser = async (req, res, next) => {
     const { name, email, password } = req.body;
     const userExists = await User.findOne({ email });
 
-    if (userExists && userExists.active) {
+    if (userExists) {
+      //(userExists && userExists.active)
       return res.status(400).json({
         success: false,
         message:
           "Entered mail is is already registered with us. Login to continue",
       });
-    } else if (userExists && !userExists.active) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Account created but need to activate.A link sent with your registered mobile number",
-      });
     }
+    //  else if (userExists && !userExists.active) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message:
+    //       "Account created but need to activate.A link sent with your registered mobile number",
+    //   });
+    // }
 
     const user = new User({
       name,
@@ -28,6 +30,7 @@ const registerUser = async (req, res, next) => {
       password,
     });
 
+    /*
     // Generate 20 bit activation code, crypto is build in package of nodejs
     crypto.randomBytes(20, function (err, buf) {
       //Ensure the activation  linkk is unique
@@ -59,6 +62,17 @@ const registerUser = async (req, res, next) => {
         });
       });
     });
+    */
+
+    //save user object
+    user.save(function (err, user) {
+      if (err) return next(err);
+      res.status(201).json({
+        success: true,
+        // message: `The activation link has been sent to ${user.email}, please click the activation link`,
+        message: `Account created successfully. Please login`,
+      });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -68,6 +82,7 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+/*
 const activeToken = async (req, res, next) => {
   //find the corresponding user
   User.findOne(
@@ -108,6 +123,7 @@ const activeToken = async (req, res, next) => {
     }
   );
 };
+*/
 
 const authUser = async (req, res) => {
   const { email, password } = req.body;
@@ -179,7 +195,7 @@ const updateUserProfile = async (req, res) => {
 
 module.exports = {
   registerUser,
-  activeToken,
+  // activeToken,
   authUser,
   getUserProfile,
   updateUserProfile,
