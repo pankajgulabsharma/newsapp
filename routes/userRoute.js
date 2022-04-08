@@ -15,8 +15,8 @@ router.route("/").post(registerUser);
 router.route("/login").post(authUser);
 
 //for this route 1st go and do login using /login route and then u will get token over there u need to take that token without "" and go to this current route (/profile) and go to Authorization setion and in Type select Bearer Type and then in Token section paste the token data which we are taking from /login route
-router.route("/profile").get(protect, getUserProfile); // this URL is protected
+router.route("/profile").get(protect, getUserProfile); // this URL is protected Note:=> here protect indicates that u have to add Authorization with Bearer token
 
-router.route("/profile").put(protect, updateUserProfile);
+router.route("/profile").put(protect, updateUserProfile); // here protect indicates that u have to add Authorization with Bearer token
 
 module.exports = router;

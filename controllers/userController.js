@@ -24,6 +24,7 @@ const registerUser = async (req, res, next) => {
     //   });
     // }
 
+    //here creating instance(user) of a model(User)
     const user = new User({
       name,
       email,
@@ -65,7 +66,7 @@ const registerUser = async (req, res, next) => {
     */
 
     //save user object
-    user.save(function (err, user) {
+    await user.save(function (err, user) {
       if (err) return next(err);
       res.status(201).json({
         success: true,
@@ -137,7 +138,7 @@ const authUser = async (req, res) => {
       name: user.name,
       email: user.email,
       avatar: user.avatar,
-      token: generateToken(user._id),
+      token: await generateToken(user._id),
     });
   } else {
     res.status(401).json({

@@ -3,6 +3,7 @@ const morgan = require("morgan"); //HTTP request logger middleware for node.js
 const connectDB = require("./config/db");
 
 const userRoute = require("./routes/userRoute");
+const categoryRoute = require("./routes/categoruRoute");
 
 require("dotenv").config();
 require("colors");
@@ -21,6 +22,7 @@ app.use(express.json()); //to access json type data
 app.use(express.urlencoded({ extended: false })); //to access url type data
 
 app.use("/api/users", userRoute); // add this user router to use middleware
+app.use("/api/category", categoryRoute);
 
 app.get("*", function (req, res) {
   console.log("Hello world!...");
