@@ -2,8 +2,11 @@ const express = require("express");
 const morgan = require("morgan"); //HTTP request logger middleware for node.js
 const connectDB = require("./config/db");
 
+const formData = require("express-form-data");
+
 const userRoute = require("./routes/userRoute");
 const categoryRoute = require("./routes/categoruRoute");
+const newsRoute = require("./routes/newsRoute");
 
 require("dotenv").config();
 require("colors");
@@ -21,8 +24,11 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json()); //to access json type data
 app.use(express.urlencoded({ extended: false })); //to access url type data
 
+app.use(formData.parse());
+
 app.use("/api/users", userRoute); // add this user router to use middleware
 app.use("/api/category", categoryRoute);
+app.use("/api/news", newsRoute);
 
 app.get("*", function (req, res) {
   console.log("Hello world!...");
